@@ -91,7 +91,6 @@ button:hover {
     transition: width 0.5s ease-in-out;
 }
 
-/* نافذة التهنئة */
 #congratsModal {
     display: none;
     position: fixed;
@@ -119,14 +118,11 @@ button:hover {
 #image {
     max-width: 60%;
     height: auto;
-    /* إضافة الحركة */
     animation: moveRightLeft 2s infinite ease-in-out;
 }
 
-/* إعداد الحركة */
 @keyframes moveRightLeft {
     0% { transform: translateX(0); }
-    50% { transform: translateX(20px); } /* تتحرك 20 بكسل يمين */
-    100% { transform: translateX(0); } /* تعود إلى مكانها الأصلي */
+    50% { transform: translateX(20px); } 
+    100% { transform: translateX(0); } 
 }
-
