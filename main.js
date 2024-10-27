@@ -1,6 +1,5 @@
 const images = [
     { src: 'images/short.jpg', word: 'short' },
-
     { src: 'images/noisy.jpg', word: 'Noisy' },
     { src: 'images/quiet.jpg', word: 'quiet' },
     { src: 'images/long.jpg', word: 'long' },
@@ -16,6 +15,11 @@ let score = 0;
 const winningScore = 8;
 
 function setImage() {
+    if (currentIndex >= images.length) {
+        showCongrats();
+        return;
+    }
+
     const imageElement = document.getElementById('image');
     const currentImage = images[currentIndex];
     imageElement.src = currentImage.src;
@@ -63,16 +67,10 @@ function checkAnswer() {
         result.style.color = "green";
         new Audio('sounds/correct.mp3').play();
         score++;
-
-        if (score === winningScore) {
-            showCongrats();
-            score = 0;
-        }
     } else {
         result.innerText = "Try again!";
         result.style.color = "red";
         new Audio('sounds/wrong.mp3').play();
-        score = 0;
     }
 
     document.getElementById('score').innerText = `Score: ${score}`;
@@ -80,7 +78,7 @@ function checkAnswer() {
 }
 
 function nextImage() {
-    currentIndex = (currentIndex + 1) % images.length;
+    currentIndex++;
     selectedChoice = null;
     setImage();
 }
@@ -93,18 +91,29 @@ function updateProgressBar() {
 
 function showCongrats() {
     const congratsModal = document.getElementById('congratsModal');
+    const congratsContent = document.getElementById('congratsContent');
+    if (score >= winningScore) {
+        congratsContent.innerHTML = '🎉 Congratulations! You\'ve won! 🎉<p>Click anywhere to continue</p>';
+        const congratsAudio = new Audio('sounds/congrats.mp3');
+        congratsAudio.play();
+
+
+    } else {
+        congratsContent.innerHTML = 'Game Over!<p>Click anywhere to try again</p>';
+    }
     congratsModal.style.display = 'flex';
-    const congratsAudio = new Audio('sounds/congrats.mp3');
-    congratsAudio.play();
 }
 
 function closeCongrats() {
     document.getElementById('congratsModal').style.display = 'none';
     document.getElementById('score').innerText = 'Score: 0';
+    currentIndex = 0;
+    score = 0;
     setImage();
 }
 
 window.onload = () => {
     setImage();
     document.getElementById('score').innerText = `Score: ${score}`;
+    document.getElementById('congratsModal').style.display = 'none'; // Ensure the modal is hidden on load
 };
